@@ -76,6 +76,7 @@ export default function StepTable({ steps, currentStep, mode }: StepTableProps) 
                   key={step.iteration}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 10 }}
                   transition={{ type: "spring", stiffness: 100, damping: 15 }}
                   className={`border-b border-white/5 transition-colors duration-300 ${
                     isCurrentRow ? "bg-white/10" : "hover:bg-white/[0.03]"
