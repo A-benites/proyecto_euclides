@@ -92,12 +92,12 @@ export default function LabPage() {
               }}
             >
               {[
-                { label: "p", value: keys.p.toString() },
-                { label: "q", value: keys.q.toString() },
-                { label: "n = p·q", value: keys.n.toString() },
-                { label: "φ(n)", value: keys.phi.toString() },
-                { label: "e (público)", value: keys.e.toString() },
-              ].map(({ label, value }) => (
+                { label: "p", value: keys.p.toString(), color: "text-violet-400" },
+                { label: "q", value: keys.q.toString(), color: "text-cyan-400" },
+                { label: "n = p·q", value: keys.n.toString(), color: "text-blue-400" },
+                { label: "φ(n)", value: keys.phi.toString(), color: "text-pink-400" },
+                { label: "e (público)", value: keys.e.toString(), color: "text-emerald-400" },
+              ].map(({ label, value, color }) => (
                 <motion.div 
                   key={label}
                   variants={{
@@ -106,7 +106,7 @@ export default function LabPage() {
                   }}
                   className="rounded-xl border border-white/10 bg-black/40 p-4 text-center shadow-lg backdrop-blur-md transition-colors"
                 >
-                  <div className="font-mono text-xs text-gray-400 mb-1">{label}</div>
+                  <div className={`font-mono text-xs ${color} mb-1 opacity-90`}>{label}</div>
                   <div className="font-mono text-lg font-medium text-white truncate" title={value}>{value}</div>
                 </motion.div>
               ))}

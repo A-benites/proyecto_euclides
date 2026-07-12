@@ -105,8 +105,8 @@ export default function LabInputForm({ onResult, onReset }: LabInputFormProps) {
       <div className="grid gap-5 sm:grid-cols-3">
         {/* p */}
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-400">
-            <span className="font-mono text-white">p</span> — Primer primo
+          <label className="mb-2 block text-sm font-medium text-gray-300">
+            <span className="font-mono text-violet-400">p</span> — Primer primo
           </label>
           <input
             type="text"
@@ -121,8 +121,8 @@ export default function LabInputForm({ onResult, onReset }: LabInputFormProps) {
 
         {/* q */}
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-400">
-            <span className="font-mono text-white">q</span> — Segundo primo
+          <label className="mb-2 block text-sm font-medium text-gray-300">
+            <span className="font-mono text-cyan-400">q</span> — Segundo primo
           </label>
           <input
             type="text"
@@ -137,8 +137,8 @@ export default function LabInputForm({ onResult, onReset }: LabInputFormProps) {
 
         {/* e */}
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-400">
-            <span className="font-mono text-white">e</span> — Exp. público
+          <label className="mb-2 block text-sm font-medium text-gray-300">
+            <span className="font-mono text-emerald-400">e</span> — Exp. público
           </label>
           <input
             type="text"
@@ -179,7 +179,7 @@ export default function LabInputForm({ onResult, onReset }: LabInputFormProps) {
           disabled={loading}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="flex-1 rounded-xl bg-white px-6 py-3 font-semibold text-black shadow-md hover:bg-gray-200 disabled:opacity-50 transition-all duration-200"
+          className="flex-1 rounded-xl bg-gradient-to-r from-violet-600 to-cyan-600 px-6 py-3 font-semibold text-white shadow-lg shadow-violet-500/20 hover:shadow-violet-500/40 disabled:opacity-50 transition-all duration-200"
         >
           {loading ? "Calculando..." : "Calcular Claves RSA ⟶"}
         </motion.button>
