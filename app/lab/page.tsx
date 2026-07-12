@@ -62,8 +62,8 @@ export default function LabPage() {
         <h1 className="text-4xl font-extrabold text-white">
           Simulador RSA Paso a Paso
         </h1>
-        <p className="mt-3 text-gray-400 max-w-2xl font-light">
-          Observa primero cómo el <strong className="text-white">Algoritmo de Euclides Clásico</strong> demuestra que $e$ y $\phi(n)$ son coprimos. Luego, desbloquea la versión <strong className="text-white">Extendida</strong> para calcular tu clave privada.
+        <p className="text-gray-400 max-w-2xl mx-auto mb-8 text-sm sm:text-base">
+          Observa primero cómo el <strong className="text-white">Algoritmo de Euclides Clásico</strong> demuestra que <strong>e</strong> y <strong>φ(n)</strong> son coprimos. Luego, desbloquea la versión <strong className="text-white">Extendida</strong> para calcular tu clave privada.
         </p>
       </div>
 
@@ -92,22 +92,22 @@ export default function LabPage() {
               }}
             >
               {[
-                { label: "p", value: keys.p.toString(), color: "text-blue-300" },
-                { label: "q", value: keys.q.toString(), color: "text-indigo-300" },
-                { label: "n = p·q", value: keys.n.toString(), color: "text-purple-300" },
-                { label: "φ(n)", value: keys.phi.toString(), color: "text-pink-300" },
-                { label: "e (público)", value: keys.e.toString(), color: "text-emerald-300" },
-              ].map(({ label, value, color }) => (
+                { label: "p", value: keys.p.toString() },
+                { label: "q", value: keys.q.toString() },
+                { label: "n = p·q", value: keys.n.toString() },
+                { label: "φ(n)", value: keys.phi.toString() },
+                { label: "e (público)", value: keys.e.toString() },
+              ].map(({ label, value }) => (
                 <motion.div 
                   key={label}
                   variants={{
                     hidden: { opacity: 0, y: 15, scale: 0.95 },
                     visible: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 150, damping: 12 } }
                   }}
-                  className="rounded-xl border border-white/5 bg-white/5 p-4 text-center shadow-lg backdrop-blur-sm hover:bg-white/10 transition-colors"
+                  className="rounded-xl border border-white/10 bg-black/40 p-4 text-center shadow-lg backdrop-blur-md transition-colors"
                 >
-                  <div className={`font-mono text-xs ${color} mb-1 opacity-80`}>{label}</div>
-                  <div className="font-mono text-lg font-semibold text-white truncate" title={value}>{value}</div>
+                  <div className="font-mono text-xs text-gray-400 mb-1">{label}</div>
+                  <div className="font-mono text-lg font-medium text-white truncate" title={value}>{value}</div>
                 </motion.div>
               ))}
             </motion.div>
@@ -167,9 +167,8 @@ export default function LabPage() {
                 >
                   <ShieldCheck className="w-12 h-12 text-indigo-400 mb-4" />
                   <h3 className="text-xl font-bold text-white mb-2">¡Son Coprimos! (MCD = 1)</h3>
-                  <p className="text-gray-400 max-w-lg mb-6">
-                    El Algoritmo de Euclides Clásico ha demostrado que $e$ y $\phi(n)$ son coprimos. 
-                    Ahora podemos "desandar" el camino con el <strong className="text-indigo-300">Algoritmo Extendido</strong> para arrastrar las variables $x$ e $y$ y encontrar el Inverso Modular.
+                  <p className="text-gray-300 text-sm mb-4">
+                    El Algoritmo de Euclides Clásico ha demostrado que <strong>e</strong> y <strong>φ(n)</strong> son coprimos. Ahora podemos "desandar" el camino con el <strong className="text-indigo-300">Algoritmo Extendido</strong> para arrastrar las variables $x$ e $y$ y encontrar el Inverso Modular.
                   </p>
                   <button
                     onClick={() => {

@@ -10,14 +10,14 @@ interface StepTableProps {
   mode: "normal" | "extended";
 }
 
-// Colores monocromáticos sutiles tipo Vercel/Glassmorphism para legibilidad
+// Colores puramente neutros (estilo Vercel/Next.js clean UI)
 const COL_COLORS = {
-  a: "text-blue-300 font-medium",
-  b: "text-indigo-300 font-medium",
-  q: "text-gray-300 font-medium",
-  r: "text-purple-300 font-semibold",
-  x: "text-emerald-300 font-semibold",
-  y: "text-cyan-300 font-semibold",
+  a: "text-gray-300 font-medium",
+  b: "text-gray-300 font-medium",
+  q: "text-gray-400 font-medium",
+  r: "text-white font-semibold",
+  x: "text-gray-200 font-semibold",
+  y: "text-gray-400 font-semibold",
 };
 
 export default function StepTable({ steps, currentStep, mode }: StepTableProps) {
@@ -91,7 +91,7 @@ export default function StepTable({ steps, currentStep, mode }: StepTableProps) 
                         {step.remainder.toString()}
                       </span>
                       {step.remainder !== 0n && idx < visibleSteps.length - 1 && mode === "normal" && (
-                        <motion.span initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }} className="flex items-center text-xs text-purple-400/80">
+                        <motion.span initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }} className="flex items-center text-xs text-gray-400">
                           <ArrowRight className="w-3 h-3 mx-1" /> b&#8320;{idx + 2}
                         </motion.span>
                       )}
