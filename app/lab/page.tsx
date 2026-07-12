@@ -62,7 +62,7 @@ export default function LabPage() {
         <h1 className="text-4xl font-extrabold text-white">
           Simulador RSA Paso a Paso
         </h1>
-        <p className="text-gray-400 max-w-2xl mx-auto mb-8 text-sm sm:text-base">
+        <p className="text-gray-400 max-w-2xl mb-8 text-sm sm:text-base">
           Observa primero cómo el <strong className="text-white">Algoritmo de Euclides Clásico</strong> demuestra que <strong>e</strong> y <strong>φ(n)</strong> son coprimos. Luego, desbloquea la versión <strong className="text-white">Extendida</strong> para calcular tu clave privada.
         </p>
       </div>
