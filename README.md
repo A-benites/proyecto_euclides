@@ -1,19 +1,20 @@
-﻿# Proyecto Euclides 🔐
+# Proyecto Euclides 🔐
 
-[![Deploy to GitHub Pages](https://github.com/<your-username>/proyecto_euclides/actions/workflows/deploy.yml/badge.svg)](https://github.com/<your-username>/proyecto_euclides/actions/workflows/deploy.yml)
+[![Deploy to GitHub Pages](https://github.com/A-benites/proyecto_euclides/actions/workflows/deploy.yml/badge.svg)](https://github.com/A-benites/proyecto_euclides/actions/workflows/deploy.yml)
 
 > Plataforma educativa interactiva para aprender el Algoritmo de Euclides y el Algoritmo de Euclides Extendido en el contexto de la criptografía RSA.
 
-**🌐 Demo en vivo:** `https://<your-username>.github.io/proyecto_euclides`
+**🌐 Demo en vivo:** [https://a-benites.github.io/proyecto_euclides/](https://a-benites.github.io/proyecto_euclides/)
 
 ---
 
 ## ✨ Características
 
-- **Introducción Visual RSA** — Diagrama de flujo interactivo que sitúa cada concepto en el pipeline de generación de claves
-- **Laboratorio Interactivo** — Ingresa tus propios números primos y exponente; el simulador muestra cada iteración del algoritmo con controles de reproducción (anterior / siguiente / autoplay)
-- **Zona de Desafíos** — 13 problemas en 3 niveles de dificultad con sistema de pistas progresivas, puntuación y badges desbloqueables
-- **BigInt nativo** — Soporte para números primos grandes con sistema de advertencia en 3 zonas (verde / amarillo / rojo)
+- **Introducción Visual RSA** — Diagrama de flujo interactivo que sitúa cada concepto en el pipeline de generación de claves.
+- **Laboratorio Interactivo Paso a Paso** — Ingresa tus propios números primos y exponente. El simulador muestra cada iteración del algoritmo en una tabla animada con controles de reproducción (anterior / siguiente / autoplay).
+- **Contexto Educativo y Fórmulas** — Paneles desplegables (`InfoAccordion`) que explican el significado matemático de $p$, $q$, $\phi(n)$ y $e$, además del desglose paso a paso de las ecuaciones recursivas de la Identidad de Bézout para el Inverso Modular.
+- **Zona de Desafíos Gamificada** — 13 problemas en 3 niveles de dificultad con sistema de pistas progresivas. Incluye sistema de puntuación, rachas (🔥) y un sistema de insignias/badges desbloqueables (🌱, 🧮, 🦅, 💎).
+- **BigInt nativo** — Soporte para números primos gigantes con sistema de advertencia en 3 zonas (verde / amarillo / rojo).
 
 ---
 
@@ -33,7 +34,8 @@
 │   ├── layout/         # Header, Footer
 │   ├── intro/          # FlowDiagram
 │   ├── lab/            # LabInputForm, StepTable, PlaybackControls
-│   └── challenges/     # ChallengeCard (integrado en page)
+│   ├── ui/             # Componentes genéricos (Tooltip, InfoAccordion)
+│   └── challenges/     # Componentes del sistema de retos
 ├── app/                # Next.js App Router
 │   ├── page.tsx        # Página de Introducción
 │   ├── lab/page.tsx    # El Laboratorio
@@ -47,7 +49,7 @@
 
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/<your-username>/proyecto_euclides.git
+git clone https://github.com/A-benites/proyecto_euclides.git
 cd proyecto_euclides
 
 # 2. Instalar dependencias
@@ -86,22 +88,7 @@ Casos clave validados:
 - `gcd(48, 18) = 6`
 - `gcd(7, 40) = 1` (coprimos)
 - Inverso de `17 mod 3120 = 2753` (ejemplo clásico RSA: p=61, q=53, e=17)
-- Miller-Rabin para primos hasta 10^24
-
----
-
-## 🌿 Ramas Git
-
-| Rama | Propósito |
-|------|-----------|
-| `main` | Producción estable |
-| `dev` | Integración de features |
-| `feat-core-math` | Fase 1: Lógica matemática core |
-| `feat-intro-ui` | Fase 2: Introducción visual |
-| `feat-lab` | Fase 3: Laboratorio interactivo |
-| `feat-animations` | Fase 4: Animaciones Framer Motion |
-| `feat-deploy` | Fase 5: CI/CD y despliegue |
-| `feat-challenges` | Fase 6: Zona de desafíos |
+- Miller-Rabin para verificación de primalidad robusta.
 
 ---
 
@@ -110,6 +97,7 @@ Casos clave validados:
 - **Framework:** Next.js 16 (App Router, `output: export`)
 - **Lenguaje:** TypeScript 5
 - **Estilos:** Tailwind CSS 4
+- **Iconos:** Lucide React
 - **Animaciones:** Framer Motion 11
 - **Tests:** Vitest 3 + @testing-library/react
 - **CI/CD:** GitHub Actions → GitHub Pages
