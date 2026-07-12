@@ -1,15 +1,18 @@
-﻿"use client";
+"use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { RSAKeys } from "@/types/euclides";
 import LabInputForm from "@/components/lab/LabInputForm";
 import StepTable from "@/components/lab/StepTable";
 import PlaybackControls from "@/components/lab/PlaybackControls";
 import { motion, AnimatePresence } from "framer-motion";
+import { LockOpen, PlayCircle, ShieldCheck } from "lucide-react";
 
 export default function LabPage() {
   const [keys, setKeys] = useState<RSAKeys | null>(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [viewMode, setViewMode] = useState<"normal" | "extended">("normal");
+  
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const totalSteps = keys?.steps.length ?? 0;
@@ -36,27 +39,31 @@ export default function LabPage() {
   const handleResult = (result: RSAKeys) => {
     setKeys(result);
     setCurrentStep(0);
+    setViewMode("normal");
     stopPlay();
   };
 
   const handleReset = () => {
     setKeys(null);
     setCurrentStep(0);
+    setViewMode("normal");
     stopPlay();
   };
+
+  const isNormalFinished = currentStep >= totalSteps - 1;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
       {/* Page header */}
       <div className="mb-10">
-        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-1.5 text-sm text-cyan-300">
+        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/5 px-4 py-1.5 text-sm text-cyan-300">
           <span>🔬</span> El Laboratorio Interactivo
         </div>
         <h1 className="text-4xl font-extrabold text-white">
           Simulador RSA Paso a Paso
         </h1>
-        <p className="mt-3 text-gray-400 max-w-2xl">
-          Ingresa dos números primos y un exponente público. El laboratorio calculará las claves RSA mostrando cada iteración del Algoritmo de Euclides Extendido.
+        <p className="mt-3 text-gray-400 max-w-2xl font-light">
+          Observa primero cómo el <strong className="text-white">Algoritmo de Euclides Clásico</strong> demuestra que $e$ y $\phi(n)$ son coprimos. Luego, desbloquea la versión <strong className="text-white">Extendida</strong> para calcular tu clave privada.
         </p>
       </div>
 
@@ -81,24 +88,14 @@ export default function LabPage() {
                 { label: "φ(n)", value: keys.phi.toString(), color: "text-orange-300" },
                 { label: "e (público)", value: keys.e.toString(), color: "text-emerald-300" },
               ].map(({ label, value, color }) => (
-                <div key={label} className="rounded-xl border border-white/10 bg-white/5 p-4 text-center">
-                  <div className={`font-mono text-xs ${color} mb-1`}>{label}</div>
-                  <div className="font-mono text-lg font-bold text-white truncate" title={value}>{value}</div>
+                <div key={label} className="rounded-xl border border-white/5 bg-white/5 p-4 text-center shadow-lg backdrop-blur-sm">
+                  <div className={`font-mono text-xs ${color} mb-1 opacity-80`}>{label}</div>
+                  <div className="font-mono text-lg font-semibold text-white truncate" title={value}>{value}</div>
                 </div>
               ))}
             </div>
 
-            {/* Private key result */}
-            <div className="rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 p-6 flex items-center gap-6">
-              <div className="text-4xl">🔐</div>
-              <div>
-                <p className="text-sm text-gray-400">Clave privada calculada</p>
-                <p className="text-3xl font-extrabold font-mono text-emerald-300">d = {keys.d.toString()}</p>
-                <p className="text-xs text-gray-500 mt-1">Verifica: {keys.e.toString()} × {keys.d.toString()} mod {keys.phi.toString()} = {((keys.e * keys.d) % keys.phi).toString()}</p>
-              </div>
-            </div>
-
-            {/* Playback */}
+            {/* Playback Controls */}
             <PlaybackControls
               currentStep={currentStep}
               totalSteps={totalSteps}
@@ -109,13 +106,87 @@ export default function LabPage() {
               onTogglePlay={() => setIsPlaying((p) => !p)}
             />
 
-            {/* Step table */}
+            {/* Step table with Mode Header */}
             <div>
-              <h2 className="mb-3 text-lg font-bold text-white">
-                Tabla del Algoritmo de Euclides Extendido
-              </h2>
-              <StepTable steps={keys.steps} currentStep={currentStep} />
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                  <PlayCircle className="w-5 h-5 text-indigo-400" />
+                  {viewMode === "normal" ? "Buscando el Máximo Común Divisor (MCD)" : "Calculando Inverso Modular (Clave Privada)"}
+                </h2>
+                <div className="flex bg-black/40 rounded-lg p-1 border border-white/10">
+                  <button
+                    onClick={() => setViewMode("normal")}
+                    className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${viewMode === "normal" ? "bg-white/10 text-white" : "text-gray-500 hover:text-gray-300"}`}
+                  >
+                    Euclides Normal
+                  </button>
+                  <button
+                    onClick={() => setViewMode("extended")}
+                    disabled={!isNormalFinished && viewMode === "normal"}
+                    className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${viewMode === "extended" ? "bg-indigo-500/20 text-indigo-300" : "text-gray-500 hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"}`}
+                  >
+                    Euclides Extendido
+                  </button>
+                </div>
+              </div>
+
+              <StepTable steps={keys.steps} currentStep={currentStep} mode={viewMode} />
             </div>
+
+            {/* Progression Unlocker */}
+            <AnimatePresence>
+              {isNormalFinished && viewMode === "normal" && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                  className="mt-6 flex flex-col items-center text-center p-8 rounded-2xl border border-indigo-500/20 bg-gradient-to-b from-indigo-500/10 to-transparent"
+                >
+                  <ShieldCheck className="w-12 h-12 text-indigo-400 mb-4" />
+                  <h3 className="text-xl font-bold text-white mb-2">¡Son Coprimos! (MCD = 1)</h3>
+                  <p className="text-gray-400 max-w-lg mb-6">
+                    El Algoritmo de Euclides Clásico ha demostrado que $e$ y $\phi(n)$ son coprimos. 
+                    Ahora podemos "desandar" el camino con el <strong className="text-indigo-300">Algoritmo Extendido</strong> para arrastrar las variables $x$ e $y$ y encontrar el Inverso Modular.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setViewMode("extended");
+                      setCurrentStep(0);
+                      setIsPlaying(true); // Auto-play the extended version for wow effect
+                    }}
+                    className="flex items-center gap-2 rounded-xl bg-indigo-500 hover:bg-indigo-400 px-6 py-3 font-semibold text-white shadow-[0_0_20px_rgba(99,102,241,0.3)] transition-all"
+                  >
+                    <LockOpen className="w-5 h-5" />
+                    Desbloquear Euclides Extendido
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            
+            {/* Private key result box for Extended Mode */}
+            <AnimatePresence>
+              {isNormalFinished && viewMode === "extended" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="rounded-2xl border border-emerald-500/20 bg-gradient-to-r from-emerald-500/5 to-transparent p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-6"
+                >
+                  <div className="flex items-center gap-6">
+                    <div className="text-4xl">🔐</div>
+                    <div>
+                      <p className="text-sm text-gray-400">Clave privada final generada</p>
+                      <p className="text-3xl font-light font-mono text-emerald-300 mt-1">d = {keys.d.toString()}</p>
+                    </div>
+                  </div>
+                  <div className="rounded-lg bg-black/40 border border-white/5 p-3 text-right">
+                    <p className="text-xs text-gray-500 mb-1">Verificación Matemática:</p>
+                    <p className="text-sm font-mono text-emerald-400/80">
+                      ({keys.e.toString()} × {keys.d.toString()}) mod {keys.phi.toString()} = {((keys.e * keys.d) % keys.phi).toString()}
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>

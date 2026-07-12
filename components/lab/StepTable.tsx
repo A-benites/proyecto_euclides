@@ -1,47 +1,60 @@
-﻿"use client";
+"use client";
 import { motion, AnimatePresence } from "framer-motion";
 import type { ExtendedEuclidStep } from "@/types/euclides";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 interface StepTableProps {
   steps: ExtendedEuclidStep[];
   currentStep: number;
-  highlightCol?: "a" | "b" | "q" | "r" | "x" | "y" | null;
+  mode: "normal" | "extended";
 }
 
 const COL_COLORS = {
-  a: "text-violet-300",
-  b: "text-cyan-300",
-  q: "text-orange-300",
-  r: "text-red-300",
-  x: "text-emerald-300",
-  y: "text-yellow-300",
+  a: "text-gray-300",
+  b: "text-gray-300",
+  q: "text-gray-400",
+  r: "text-indigo-400 font-semibold",
+  x: "text-emerald-400 font-semibold",
+  y: "text-emerald-400 font-semibold",
 };
 
-export default function StepTable({ steps, currentStep, highlightCol }: StepTableProps) {
+export default function StepTable({ steps, currentStep, mode }: StepTableProps) {
   const visibleSteps = steps.slice(0, currentStep + 1);
   const lastVisible = visibleSteps[visibleSteps.length - 1];
 
+  const columns = [
+    { key: "#", label: "#" },
+    { key: "a", label: "a" },
+    { key: "b", label: "b" },
+    { key: "q", label: "q = ⌊a/b⌋" },
+    { key: "r", label: "r = a mod b" },
+    ...(mode === "extended"
+      ? [
+          { key: "x", label: "x" },
+          { key: "y", label: "y" },
+        ]
+      : []),
+  ];
+
   return (
-    <div className="overflow-x-auto rounded-2xl border border-white/10">
+    <motion.div layout className="overflow-x-auto rounded-xl border border-white/10 bg-black/40 shadow-2xl backdrop-blur-md">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-white/10 bg-white/5">
-            {["#", "a", "b", "q = ⌊a/b⌋", "r = a mod b", "x", "y"].map((h, i) => (
-              <th
-                key={h}
-                className={`px-4 py-3 font-mono font-semibold text-left ${
-                  i === 0 ? "text-gray-500 w-10" :
-                  i === 1 ? COL_COLORS.a :
-                  i === 2 ? COL_COLORS.b :
-                  i === 3 ? COL_COLORS.q :
-                  i === 4 ? COL_COLORS.r :
-                  i === 5 ? COL_COLORS.x :
-                  COL_COLORS.y
-                }`}
-              >
-                {h}
-              </th>
-            ))}
+          <tr className="border-b border-white/5 bg-white/5">
+            <AnimatePresence>
+              {columns.map((col, i) => (
+                <motion.th
+                  layout
+                  key={col.key}
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  className={`px-5 py-4 font-mono font-medium text-left tracking-wide ${i === 0 ? "text-gray-500 w-12" : "text-gray-400"}`}
+                >
+                  {col.label}
+                </motion.th>
+              ))}
+            </AnimatePresence>
           </tr>
         </thead>
         <tbody>
@@ -52,38 +65,56 @@ export default function StepTable({ steps, currentStep, highlightCol }: StepTabl
 
               return (
                 <motion.tr
+                  layout
                   key={step.iteration}
-                  initial={{ opacity: 0, y: -12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35, ease: "easeOut" }}
-                  className={`border-b border-white/5 transition-colors duration-300 ${
-                    isCurrentRow
-                      ? "bg-violet-500/10 border-violet-500/20"
-                      : "hover:bg-white/3"
+                  initial={{ opacity: 0, y: -10, filter: "blur(4px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className={`border-b border-white/5 transition-colors duration-500 ${
+                    isCurrentRow ? "bg-white/[0.04]" : "hover:bg-white/[0.02]"
                   } ${isLastStep ? "opacity-60" : ""}`}
                 >
-                  <td className="px-4 py-3 font-mono text-gray-500">{step.iteration}</td>
-                  <td className={`px-4 py-3 font-mono font-medium ${COL_COLORS.a} ${isCurrentRow && highlightCol === "a" ? "rounded bg-violet-500/20 px-2" : ""}`}>
-                    {step.a.toString()}
-                  </td>
-                  <td className={`px-4 py-3 font-mono font-medium ${COL_COLORS.b} ${isCurrentRow && highlightCol === "b" ? "rounded bg-cyan-500/20 px-2" : ""}`}>
-                    {step.b.toString()}
-                  </td>
-                  <td className={`px-4 py-3 font-mono ${COL_COLORS.q}`}>
-                    {step.quotient.toString()}
-                  </td>
-                  <td className={`px-4 py-3 font-mono font-semibold ${step.remainder === 0n ? "text-gray-500 line-through" : COL_COLORS.r}`}>
-                    {step.remainder.toString()}
-                    {step.remainder !== 0n && idx < visibleSteps.length - 1 && (
-                      <span className="ml-2 text-xs text-gray-500">→ b&#8320;{idx + 2}</span>
+                  <motion.td layout className="px-5 py-4 font-mono text-gray-500">{step.iteration}</motion.td>
+                  <motion.td layout className={`px-5 py-4 font-mono ${COL_COLORS.a}`}>{step.a.toString()}</motion.td>
+                  <motion.td layout className={`px-5 py-4 font-mono ${COL_COLORS.b}`}>{step.b.toString()}</motion.td>
+                  <motion.td layout className={`px-5 py-4 font-mono ${COL_COLORS.q}`}>{step.quotient.toString()}</motion.td>
+                  <motion.td layout className={`px-5 py-4 font-mono ${COL_COLORS.r}`}>
+                    <div className="flex items-center gap-2">
+                      <span className={step.remainder === 0n ? "text-gray-600 line-through" : ""}>
+                        {step.remainder.toString()}
+                      </span>
+                      {step.remainder !== 0n && idx < visibleSteps.length - 1 && mode === "normal" && (
+                        <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center text-xs text-indigo-500/70">
+                          <ArrowRight className="w-3 h-3 mx-1" /> b&#8320;{idx + 2}
+                        </motion.span>
+                      )}
+                    </div>
+                  </motion.td>
+                  
+                  <AnimatePresence>
+                    {mode === "extended" && (
+                      <>
+                        <motion.td
+                          layout
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          className={`px-5 py-4 font-mono ${COL_COLORS.x}`}
+                        >
+                          {step.x.toString()}
+                        </motion.td>
+                        <motion.td
+                          layout
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          className={`px-5 py-4 font-mono ${COL_COLORS.y}`}
+                        >
+                          {step.y.toString()}
+                        </motion.td>
+                      </>
                     )}
-                  </td>
-                  <td className={`px-4 py-3 font-mono ${COL_COLORS.x}`}>
-                    {step.x.toString()}
-                  </td>
-                  <td className={`px-4 py-3 font-mono ${COL_COLORS.y}`}>
-                    {step.y.toString()}
-                  </td>
+                  </AnimatePresence>
                 </motion.tr>
               );
             })}
@@ -91,27 +122,30 @@ export default function StepTable({ steps, currentStep, highlightCol }: StepTabl
         </tbody>
       </table>
 
-      {/* Result banner */}
+      {/* Result banner (Extended mode only) */}
       <AnimatePresence>
-        {lastVisible?.isLast && currentStep >= steps.length - 1 && (
+        {lastVisible?.isLast && currentStep >= steps.length - 1 && mode === "extended" && (
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-4 border-t border-emerald-500/30 bg-emerald-500/10 px-6 py-4"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            className="border-t border-emerald-500/20 bg-gradient-to-r from-emerald-500/10 to-transparent overflow-hidden"
           >
-            <span className="text-2xl">✅</span>
-            <div>
-              <p className="font-semibold text-emerald-300">
-                MCD = {lastVisible.b.toString()} — Los parámetros son coprimos
-              </p>
-              <p className="text-sm text-gray-400">
-                El Algoritmo de Euclides Extendido ha terminado. La clave privada{" "}
-                <span className="font-mono text-emerald-400">d = x</span> ha sido calculada.
-              </p>
+            <div className="px-6 py-5 flex items-center gap-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400">
+                <CheckCircle2 className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="font-medium text-emerald-300">
+                  ¡Inverso Modular Encontrado!
+                </p>
+                <p className="text-sm text-gray-400 mt-0.5">
+                  La clave privada generada es <span className="font-mono font-medium text-emerald-400">d = {lastVisible.x.toString()}</span>
+                </p>
+              </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }
