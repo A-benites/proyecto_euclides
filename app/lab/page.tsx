@@ -79,21 +79,38 @@ export default function LabPage() {
             exit={{ opacity: 0, y: 20 }}
             className="mt-8 space-y-6"
           >
-            {/* Key summary */}
-            <div className="grid gap-3 sm:grid-cols-5">
+            {/* Key summary with stagger */}
+            <motion.div 
+              className="grid gap-3 sm:grid-cols-5"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: { staggerChildren: 0.08 }
+                }
+              }}
+            >
               {[
-                { label: "p", value: keys.p.toString(), color: "text-violet-300" },
-                { label: "q", value: keys.q.toString(), color: "text-cyan-300" },
-                { label: "n = p·q", value: keys.n.toString(), color: "text-blue-300" },
-                { label: "φ(n)", value: keys.phi.toString(), color: "text-orange-300" },
+                { label: "p", value: keys.p.toString(), color: "text-blue-300" },
+                { label: "q", value: keys.q.toString(), color: "text-indigo-300" },
+                { label: "n = p·q", value: keys.n.toString(), color: "text-purple-300" },
+                { label: "φ(n)", value: keys.phi.toString(), color: "text-pink-300" },
                 { label: "e (público)", value: keys.e.toString(), color: "text-emerald-300" },
               ].map(({ label, value, color }) => (
-                <div key={label} className="rounded-xl border border-white/5 bg-white/5 p-4 text-center shadow-lg backdrop-blur-sm">
+                <motion.div 
+                  key={label}
+                  variants={{
+                    hidden: { opacity: 0, y: 15, scale: 0.95 },
+                    visible: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 150, damping: 12 } }
+                  }}
+                  className="rounded-xl border border-white/5 bg-white/5 p-4 text-center shadow-lg backdrop-blur-sm hover:bg-white/10 transition-colors"
+                >
                   <div className={`font-mono text-xs ${color} mb-1 opacity-80`}>{label}</div>
                   <div className="font-mono text-lg font-semibold text-white truncate" title={value}>{value}</div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
 
             {/* Playback Controls */}
             <PlaybackControls
@@ -113,19 +130,25 @@ export default function LabPage() {
                   <PlayCircle className="w-5 h-5 text-indigo-400" />
                   {viewMode === "normal" ? "Buscando el Máximo Común Divisor (MCD)" : "Calculando Inverso Modular (Clave Privada)"}
                 </h2>
-                <div className="flex bg-black/40 rounded-lg p-1 border border-white/10">
+                <div className="flex bg-black/40 rounded-lg p-1 border border-white/10 relative">
                   <button
                     onClick={() => setViewMode("normal")}
-                    className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${viewMode === "normal" ? "bg-white/10 text-white" : "text-gray-500 hover:text-gray-300"}`}
+                    className={`relative z-10 px-4 py-1.5 text-xs font-medium rounded-md transition-colors ${viewMode === "normal" ? "text-white" : "text-gray-500 hover:text-gray-300"}`}
                   >
                     Euclides Normal
+                    {viewMode === "normal" && (
+                      <motion.div layoutId="modePill" className="absolute inset-0 bg-white/10 rounded-md -z-10" />
+                    )}
                   </button>
                   <button
                     onClick={() => setViewMode("extended")}
                     disabled={!isNormalFinished && viewMode === "normal"}
-                    className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${viewMode === "extended" ? "bg-indigo-500/20 text-indigo-300" : "text-gray-500 hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"}`}
+                    className={`relative z-10 px-4 py-1.5 text-xs font-medium rounded-md transition-colors ${viewMode === "extended" ? "text-indigo-300" : "text-gray-500 hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"}`}
                   >
                     Euclides Extendido
+                    {viewMode === "extended" && (
+                      <motion.div layoutId="modePill" className="absolute inset-0 bg-indigo-500/20 rounded-md -z-10" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -176,7 +199,7 @@ export default function LabPage() {
                     <div>
                       <p className="text-sm font-medium tracking-wide text-emerald-400">CLAVE PRIVADA FINAL GENERADA</p>
                       <p className="text-4xl font-bold font-mono text-emerald-300 mt-1">
-                        <span className="font-serif italic text-emerald-400">d</span> = {keys.d.toString()}
+                        d = {keys.d.toString()}
                       </p>
                     </div>
                   </div>

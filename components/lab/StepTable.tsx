@@ -10,14 +10,14 @@ interface StepTableProps {
   mode: "normal" | "extended";
 }
 
-// Colores simples y legibles para distinguir variables
+// Colores monocromáticos sutiles tipo Vercel/Glassmorphism para legibilidad
 const COL_COLORS = {
-  a: "text-blue-400",
-  b: "text-purple-400",
-  q: "text-orange-400",
-  r: "text-red-400 font-semibold",
-  x: "text-emerald-400 font-semibold",
-  y: "text-cyan-400 font-semibold",
+  a: "text-blue-300 font-medium",
+  b: "text-indigo-300 font-medium",
+  q: "text-gray-300 font-medium",
+  r: "text-purple-300 font-semibold",
+  x: "text-emerald-300 font-semibold",
+  y: "text-cyan-300 font-semibold",
 };
 
 export default function StepTable({ steps, currentStep, mode }: StepTableProps) {
@@ -26,35 +26,36 @@ export default function StepTable({ steps, currentStep, mode }: StepTableProps) 
 
   const columns = [
     { key: "#", label: "#", tooltip: "Número de Iteración" },
-    { key: "a", label: <span className="font-serif italic">a</span>, tooltip: "Dividendo (el número mayor en esta iteración)" },
-    { key: "b", label: <span className="font-serif italic">b</span>, tooltip: "Divisor (el número menor en esta iteración)" },
-    { key: "q", label: <><span className="font-serif italic">q</span> = ⌊<span className="font-serif italic">a/b</span>⌋</>, tooltip: "Cociente (cuántas veces cabe b en a)" },
-    { key: "r", label: <><span className="font-serif italic">r</span> = <span className="font-serif italic">a</span> mod <span className="font-serif italic">b</span></>, tooltip: "Residuo (lo que sobra). Si es 0, el último b es el MCD." },
+    { key: "a", label: "a", tooltip: "Dividendo (el número mayor)" },
+    { key: "b", label: "b", tooltip: "Divisor (el número menor)" },
+    { key: "q", label: "q = ⌊a/b⌋", tooltip: "Cociente (cuántas veces cabe b en a)" },
+    { key: "r", label: "r = a mod b", tooltip: "Residuo. Cuando llega a 0, el último divisor b es el MCD." },
     ...(mode === "extended"
       ? [
-          { key: "x", label: <span className="font-serif italic">x</span>, tooltip: "Coeficiente de Bézout primario (nuestra Clave Privada d)" },
-          { key: "y", label: <span className="font-serif italic">y</span>, tooltip: "Coeficiente de Bézout secundario" },
+          { key: "x", label: "x", tooltip: "Clave Privada 'd' al finalizar" },
+          { key: "y", label: "y", tooltip: "Coeficiente de Bézout secundario" },
         ]
       : []),
   ];
 
   return (
-    <motion.div layout className="overflow-x-auto rounded-xl border border-white/10 bg-black/30 backdrop-blur-md">
+    <motion.div layout className="overflow-x-auto rounded-xl border border-white/10 bg-black/40 backdrop-blur-md shadow-xl">
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-white/10 bg-white/5">
-            <AnimatePresence>
+            <AnimatePresence mode="popLayout">
               {columns.map((col, i) => (
                 <motion.th
                   layout
                   key={col.key}
-                  initial={{ opacity: 0, x: 10 }}
+                  initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                  className={`px-5 py-4 font-mono font-medium text-left ${i === 0 ? "text-gray-400 w-12" : "text-gray-300"}`}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.2 }}
+                  className={`px-5 py-4 font-mono font-medium text-left ${i === 0 ? "text-gray-500 w-12" : "text-gray-300"}`}
                 >
                   <Tooltip content={col.tooltip}>
-                    <span className="cursor-help border-b border-dashed border-gray-500/50 pb-0.5 hover:text-white transition-colors">
+                    <span className="border-b border-dashed border-gray-500/50 pb-0.5 hover:text-white hover:border-white/50 transition-all">
                       {col.label}
                     </span>
                   </Tooltip>
@@ -73,48 +74,48 @@ export default function StepTable({ steps, currentStep, mode }: StepTableProps) 
                 <motion.tr
                   layout
                   key={step.iteration}
-                  initial={{ opacity: 0, y: -10, filter: "blur(4px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ type: "spring", stiffness: 100, damping: 15 }}
                   className={`border-b border-white/5 transition-colors duration-300 ${
                     isCurrentRow ? "bg-white/10" : "hover:bg-white/[0.03]"
                   } ${isLastStep ? "opacity-60" : ""}`}
                 >
                   <motion.td layout className="px-5 py-4 font-mono text-gray-500">{step.iteration}</motion.td>
-                  <motion.td layout className={`px-5 py-4 font-mono ${COL_COLORS.a} ${isCurrentRow ? 'text-base font-semibold' : ''}`}>{step.a.toString()}</motion.td>
-                  <motion.td layout className={`px-5 py-4 font-mono ${COL_COLORS.b} ${isCurrentRow ? 'text-base font-semibold' : ''}`}>{step.b.toString()}</motion.td>
-                  <motion.td layout className={`px-5 py-4 font-mono ${COL_COLORS.q} ${isCurrentRow ? 'text-base font-semibold' : ''}`}>{step.quotient.toString()}</motion.td>
-                  <motion.td layout className={`px-5 py-4 font-mono ${COL_COLORS.r} ${isCurrentRow ? 'text-base font-bold' : ''}`}>
+                  <motion.td layout className={`px-5 py-4 font-mono ${COL_COLORS.a} ${isCurrentRow ? 'text-base' : ''}`}>{step.a.toString()}</motion.td>
+                  <motion.td layout className={`px-5 py-4 font-mono ${COL_COLORS.b} ${isCurrentRow ? 'text-base' : ''}`}>{step.b.toString()}</motion.td>
+                  <motion.td layout className={`px-5 py-4 font-mono ${COL_COLORS.q} ${isCurrentRow ? 'text-base' : ''}`}>{step.quotient.toString()}</motion.td>
+                  <motion.td layout className={`px-5 py-4 font-mono ${COL_COLORS.r} ${isCurrentRow ? 'text-base' : ''}`}>
                     <div className="flex items-center gap-2">
                       <span className={step.remainder === 0n ? "text-gray-600 line-through" : ""}>
                         {step.remainder.toString()}
                       </span>
                       {step.remainder !== 0n && idx < visibleSteps.length - 1 && mode === "normal" && (
-                        <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center text-xs text-red-400/80">
-                          <ArrowRight className="w-3 h-3 mx-1" /> <span className="font-serif italic">b</span>&#8320;{idx + 2}
+                        <motion.span initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }} className="flex items-center text-xs text-purple-400/80">
+                          <ArrowRight className="w-3 h-3 mx-1" /> b&#8320;{idx + 2}
                         </motion.span>
                       )}
                     </div>
                   </motion.td>
                   
-                  <AnimatePresence>
+                  <AnimatePresence mode="popLayout">
                     {mode === "extended" && (
                       <>
                         <motion.td
                           layout
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: -20 }}
-                          className={`px-5 py-4 font-mono ${COL_COLORS.x} ${isCurrentRow ? 'text-base font-bold' : ''}`}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.9 }}
+                          className={`px-5 py-4 font-mono ${COL_COLORS.x} ${isCurrentRow ? 'text-base' : ''}`}
                         >
                           {step.x.toString()}
                         </motion.td>
                         <motion.td
                           layout
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: -20 }}
-                          className={`px-5 py-4 font-mono ${COL_COLORS.y} ${isCurrentRow ? 'text-base font-bold' : ''}`}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.9 }}
+                          className={`px-5 py-4 font-mono ${COL_COLORS.y} ${isCurrentRow ? 'text-base' : ''}`}
                         >
                           {step.y.toString()}
                         </motion.td>
@@ -144,7 +145,7 @@ export default function StepTable({ steps, currentStep, mode }: StepTableProps) 
                 <p className="font-medium text-emerald-300">
                   ¡Inverso Modular Encontrado!
                 </p>
-                <p className="text-gray-300 mt-0.5">
+                <p className="text-sm text-gray-300 mt-0.5">
                   La clave privada generada es <strong className="font-mono text-emerald-400 bg-white/5 px-2 py-0.5 rounded ml-1">d = {lastVisible.x.toString()}</strong>
                 </p>
               </div>
