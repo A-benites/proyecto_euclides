@@ -4,6 +4,7 @@ import type { RSAKeys } from "@/types/euclides";
 import LabInputForm from "@/components/lab/LabInputForm";
 import StepTable from "@/components/lab/StepTable";
 import PlaybackControls from "@/components/lab/PlaybackControls";
+import InfoAccordion from "@/components/ui/InfoAccordion";
 import { motion, AnimatePresence } from "framer-motion";
 import { LockOpen, PlayCircle, ShieldCheck } from "lucide-react";
 
@@ -112,6 +113,19 @@ export default function LabPage() {
               ))}
             </motion.div>
 
+            {/* Explicación de los números (Pedagogía) */}
+            <InfoAccordion title="¿Qué significan estos números en RSA?" icon={<span className="text-xl">📚</span>}>
+              <p>
+                El candado RSA (tu Clave Pública) está formado por dos cosas: el módulo <strong>n</strong> y el exponente <strong>e</strong>.
+              </p>
+              <ul className="list-disc pl-5 space-y-2 mt-2">
+                <li><strong className="text-violet-300">p y q:</strong> Son dos números primos elegidos en secreto. Son los cimientos de tu candado. Nadie debe conocerlos.</li>
+                <li><strong className="text-blue-300">n (Módulo):</strong> Es simplemente <code className="bg-black/30 px-1 rounded">p × q</code>. Este número es público. La seguridad de RSA radica en que es fácil multiplicar <em>p</em> y <em>q</em>, pero es casi imposible descubrir cuáles eran si solo te dan <em>n</em>.</li>
+                <li><strong className="text-pink-300">φ(n) (Totiente de Euler):</strong> Calcula cuántos números son coprimos con <em>n</em>. La fórmula secreta es <code className="bg-black/30 px-1 rounded">(p-1) × (q-1)</code>. ¡Solo tú puedes calcular esto porque solo tú conoces <em>p</em> y <em>q</em>!</li>
+                <li><strong className="text-emerald-300">e (Exponente Público):</strong> Es el número que usa cualquier persona para "cerrar" un mensaje (encriptarlo). Debe ser coprimo con <em>φ(n)</em>.</li>
+              </ul>
+            </InfoAccordion>
+
             {/* Playback Controls */}
             <PlaybackControls
               currentStep={currentStep}
@@ -152,6 +166,34 @@ export default function LabPage() {
                   </button>
                 </div>
               </div>
+
+              {/* Explicación del algoritmo según el modo (Pedagogía) */}
+              {viewMode === "normal" ? (
+                <InfoAccordion title="¿Qué hace el Algoritmo Clásico?" defaultOpen={true} icon={<span className="text-xl">⚙️</span>}>
+                  <p>
+                    Para que RSA funcione, necesitamos garantizar matemáticamente que el exponente <strong>e</strong> y <strong>φ(n)</strong> no tienen ningún divisor en común (excepto el 1). A esto se le llama ser <strong>coprimos</strong>.
+                  </p>
+                  <p className="mt-2">
+                    El algoritmo va dividiendo el número mayor (a) entre el menor (b) y se queda con el residuo (r). 
+                    Fórmula clave: <code className="bg-black/30 px-1.5 py-0.5 rounded text-indigo-300 font-mono">r = a mod b</code>.
+                  </p>
+                  <p className="mt-2">
+                    Luego, repite el proceso empujando los números a la izquierda: el divisor pasa a ser el dividendo (<code className="font-mono text-cyan-300">a ← b</code>) y el residuo pasa a ser el nuevo divisor (<code className="font-mono text-pink-300">b ← r</code>). Cuando el residuo llega a 0, el último número que dividió perfectamente es nuestro <strong>Máximo Común Divisor (MCD)</strong>.
+                  </p>
+                </InfoAccordion>
+              ) : (
+                <InfoAccordion title="¿Para qué sirve el Algoritmo Extendido?" defaultOpen={true} icon={<span className="text-xl">🗝️</span>}>
+                  <p>
+                    ¡Aquí ocurre la verdadera magia! En RSA, necesitas una Clave Privada <strong>d</strong> que pueda deshacer lo que el candado <strong>e</strong> cerró. Matemáticamente, esto significa que <code className="bg-black/30 px-1.5 py-0.5 rounded text-indigo-300 font-mono">e × d = 1 mod φ(n)</code> (El Inverso Modular).
+                  </p>
+                  <p className="mt-2">
+                    El Algoritmo Extendido toma el camino que hicimos antes y lo <strong>desanda hacia atrás</strong> usando la Identidad de Bézout. Arrastra consigo dos coeficientes mágicos (<strong>x</strong> e <strong>y</strong>). 
+                  </p>
+                  <p className="mt-2">
+                    Al final del proceso, el coeficiente <strong className="text-amber-300">x</strong> será exactamente nuestra llave privada <strong>d</strong>.
+                  </p>
+                </InfoAccordion>
+              )}
 
               <StepTable steps={keys.steps} currentStep={currentStep} mode={viewMode} />
             </div>
