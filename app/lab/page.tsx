@@ -182,16 +182,30 @@ export default function LabPage() {
                   </p>
                 </InfoAccordion>
               ) : (
-                <InfoAccordion title="¿Para qué sirve el Algoritmo Extendido?" defaultOpen={true} icon={<span className="text-xl">🗝️</span>}>
+                <InfoAccordion title="¿Para qué sirve y cuáles son las Fórmulas del Algoritmo Extendido?" defaultOpen={true} icon={<span className="text-xl">🗝️</span>}>
                   <p>
                     ¡Aquí ocurre la verdadera magia! En RSA, necesitas una Clave Privada <strong>d</strong> que pueda deshacer lo que el candado <strong>e</strong> cerró. Matemáticamente, esto significa que <code className="bg-black/30 px-1.5 py-0.5 rounded text-indigo-300 font-mono">e × d = 1 mod φ(n)</code> (El Inverso Modular).
                   </p>
-                  <p className="mt-2">
-                    El Algoritmo Extendido toma el camino que hicimos antes y lo <strong>desanda hacia atrás</strong> usando la Identidad de Bézout. Arrastra consigo dos coeficientes mágicos (<strong>x</strong> e <strong>y</strong>). 
+                  <p className="mt-3">
+                    El Algoritmo Extendido desanda hacia atrás usando la Identidad de Bézout para encontrar dos coeficientes mágicos (<strong>x</strong> e <strong>y</strong>) que cumplen: <code className="bg-black/30 px-1.5 py-0.5 rounded text-indigo-300 font-mono">e·x + φ(n)·y = 1</code>.
                   </p>
-                  <p className="mt-2">
-                    Al final del proceso, el coeficiente <strong className="text-amber-300">x</strong> será exactamente nuestra llave privada <strong>d</strong>.
-                  </p>
+                  <div className="mt-4 bg-black/20 p-4 rounded-lg border border-indigo-500/10">
+                    <p className="font-semibold text-indigo-200 mb-2">Las Fórmulas paso a paso:</p>
+                    <ul className="list-disc pl-5 space-y-2">
+                      <li>
+                        Para cada fila, calculamos los nuevos coeficientes usando el cociente <strong>q</strong> de esa misma fila:
+                        <br/>
+                        <code className="text-amber-300 font-mono bg-black/40 px-1 rounded mt-1 inline-block">Nuevo x = (x anterior) - q × (x actual)</code>
+                        <br/>
+                        <code className="text-blue-300 font-mono bg-black/40 px-1 rounded mt-1 inline-block">Nuevo y = (y anterior) - q × (y actual)</code>
+                      </li>
+                      <li className="pt-2">
+                        <strong>¿Cómo llegamos a d?</strong> Al final del proceso, el coeficiente <strong className="text-amber-300">x</strong> final es nuestra llave privada. Sin embargo, si <strong>x</strong> resulta ser un número negativo, simplemente le sumamos el valor de <strong>φ(n)</strong> para pasarlo a positivo.
+                        <br/>
+                        <code className="text-emerald-300 font-mono bg-black/40 px-1 rounded mt-1 inline-block">d = x mod φ(n)</code>
+                      </li>
+                    </ul>
+                  </div>
                 </InfoAccordion>
               )}
 
