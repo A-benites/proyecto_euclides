@@ -168,7 +168,7 @@ export default function LabPage() {
                   <ShieldCheck className="w-12 h-12 text-indigo-400 mb-4" />
                   <h3 className="text-xl font-bold text-white mb-2">¡Son Coprimos! (MCD = 1)</h3>
                   <p className="text-gray-300 text-sm mb-4">
-                    El Algoritmo de Euclides Clásico ha demostrado que <strong>e</strong> y <strong>φ(n)</strong> son coprimos. Ahora podemos "desandar" el camino con el <strong className="text-indigo-300">Algoritmo Extendido</strong> para arrastrar las variables $x$ e $y$ y encontrar el Inverso Modular.
+                    El Algoritmo de Euclides Clásico ha demostrado que <strong>e</strong> y <strong>φ(n)</strong> son coprimos. Ahora podemos "desandar" el camino con el <strong className="text-indigo-300">Algoritmo Extendido</strong> para arrastrar las variables <strong>x</strong> e <strong>y</strong> y encontrar el Inverso Modular.
                   </p>
                   <button
                     onClick={() => {

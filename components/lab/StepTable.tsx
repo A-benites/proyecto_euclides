@@ -84,7 +84,14 @@ export default function StepTable({ steps, currentStep, mode }: StepTableProps) 
                 >
                   <motion.td layout className="px-5 py-4 font-mono text-gray-500">{step.iteration}</motion.td>
                   <motion.td layout className={`px-5 py-4 font-mono ${COL_COLORS.a} ${isCurrentRow ? 'text-base' : ''}`}>{step.a.toString()}</motion.td>
-                  <motion.td layout className={`px-5 py-4 font-mono ${COL_COLORS.b} ${isCurrentRow ? 'text-base' : ''}`}>{step.b.toString()}</motion.td>
+                  <motion.td layout className={`px-5 py-4 font-mono ${COL_COLORS.b} ${isCurrentRow ? 'text-base' : ''}`}>
+                    {step.b.toString()}
+                    {isLastStep && step.remainder === 0n && (
+                      <span className="ml-2 inline-flex items-center rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-400 uppercase tracking-wider">
+                        MCD
+                      </span>
+                    )}
+                  </motion.td>
                   <motion.td layout className={`px-5 py-4 font-mono ${COL_COLORS.q} ${isCurrentRow ? 'text-base' : ''}`}>{step.quotient.toString()}</motion.td>
                   <motion.td layout className={`px-5 py-4 font-mono ${COL_COLORS.r} ${isCurrentRow ? 'text-base' : ''}`}>
                     <div className="flex items-center gap-2">
@@ -93,7 +100,7 @@ export default function StepTable({ steps, currentStep, mode }: StepTableProps) 
                       </span>
                       {step.remainder !== 0n && idx < visibleSteps.length - 1 && mode === "normal" && (
                         <motion.span initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }} className="flex items-center text-xs text-pink-400/80">
-                          <ArrowRight className="w-3 h-3 mx-1" /> b&#8320;{idx + 2}
+                          <ArrowRight className="w-3 h-3 mx-1" /> pasa a ser b
                         </motion.span>
                       )}
                     </div>
