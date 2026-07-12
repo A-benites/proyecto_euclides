@@ -167,22 +167,22 @@ export default function LabPage() {
             <AnimatePresence>
               {isNormalFinished && viewMode === "extended" && (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
-                  className="rounded-3xl border-2 border-emerald-400/50 bg-gradient-to-br from-emerald-500/20 via-black to-emerald-900/40 p-8 shadow-[0_0_50px_rgba(16,185,129,0.3)] flex flex-col sm:flex-row sm:items-center justify-between gap-6"
+                  className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-6"
                 >
                   <div className="flex items-center gap-6">
-                    <div className="text-6xl drop-shadow-[0_0_15px_rgba(52,211,153,0.8)]">🔐</div>
+                    <div className="text-5xl">🔐</div>
                     <div>
-                      <p className="text-sm font-semibold tracking-widest text-emerald-300 uppercase">Clave Privada Final Generada</p>
-                      <p className="text-5xl font-bold font-mono text-emerald-400 mt-2 drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]">
-                        <span className="font-serif italic text-emerald-300">d</span> = {keys.d.toString()}
+                      <p className="text-sm font-medium tracking-wide text-emerald-400">CLAVE PRIVADA FINAL GENERADA</p>
+                      <p className="text-4xl font-bold font-mono text-emerald-300 mt-1">
+                        <span className="font-serif italic text-emerald-400">d</span> = {keys.d.toString()}
                       </p>
                     </div>
                   </div>
-                  <div className="rounded-xl bg-black/60 border border-emerald-500/30 p-4 text-right shadow-inner">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-emerald-500 mb-2">Verificación Matemática:</p>
-                    <p className="text-base font-mono text-emerald-200">
+                  <div className="rounded-xl bg-black/40 border border-white/5 p-4 text-right">
+                    <p className="text-xs font-medium uppercase tracking-wider text-emerald-500/70 mb-2">Verificación Matemática:</p>
+                    <p className="text-sm font-mono text-emerald-300">
                       ({keys.e.toString()} × <strong className="text-emerald-400">{keys.d.toString()}</strong>) mod {keys.phi.toString()} = {((keys.e * keys.d) % keys.phi).toString()}
                     </p>
                   </div>
