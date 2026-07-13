@@ -214,7 +214,8 @@ export default function LabPage() {
               )}
 
               <StepTable steps={keys.steps} currentStep={currentStep} mode={viewMode} />
-              </div>
+            </div>
+            </div>
 
               {/* Right Column: Sticky Panel */}
               <div className="hidden lg:block">
