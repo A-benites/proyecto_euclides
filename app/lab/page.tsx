@@ -123,7 +123,7 @@ export default function LabPage() {
                 <li><strong className="text-violet-300">p y q:</strong> Son dos números primos elegidos en secreto. Son los cimientos de tu candado. Nadie debe conocerlos.</li>
                 <li><strong className="text-blue-300">n (Módulo):</strong> Es simplemente <code className="bg-black/30 px-1 rounded">p × q</code>. Este número es público. La seguridad de RSA radica en que es fácil multiplicar <em>p</em> y <em>q</em>, pero es casi imposible descubrir cuáles eran si solo te dan <em>n</em>.</li>
                 <li><strong className="text-pink-300">φ(n) (Totiente de Euler):</strong> Calcula cuántos números son coprimos con <em>n</em>. La fórmula secreta es <code className="bg-black/30 px-1 rounded">(p-1) × (q-1)</code>. ¡Solo tú puedes calcular esto porque solo tú conoces <em>p</em> y <em>q</em>!</li>
-                <li><strong className="text-emerald-300">e (Exponente Público):</strong> Es el número que usa cualquier persona para "cerrar" un mensaje (encriptarlo). Debe ser coprimo con <em>φ(n)</em>.</li>
+                <li><strong className="text-emerald-300">e (Exponente Público):</strong> Es el número que usa cualquier persona para &quot;cerrar&quot; un mensaje (encriptarlo). Debe ser coprimo con <em>φ(n)</em>.</li>
               </ul>
             </InfoAccordion>
 
@@ -238,7 +238,7 @@ export default function LabPage() {
                   <ShieldCheck className="w-12 h-12 text-indigo-400 mb-4" />
                   <h3 className="text-xl font-bold text-white mb-2">¡Son Coprimos! (MCD = 1)</h3>
                   <p className="text-gray-300 text-sm mb-4">
-                    El Algoritmo de Euclides Clásico ha demostrado que <strong>e</strong> y <strong>φ(n)</strong> son coprimos. Ahora podemos "desandar" el camino con el <strong className="text-indigo-300">Algoritmo Extendido</strong> para arrastrar las variables <strong>x</strong> e <strong>y</strong> y encontrar el Inverso Modular.
+                    El Algoritmo de Euclides Clásico ha demostrado que <strong>e</strong> y <strong>φ(n)</strong> son coprimos. Ahora podemos &quot;desandar&quot; el camino con el <strong className="text-indigo-300">Algoritmo Extendido</strong> para arrastrar las variables <strong>x</strong> e <strong>y</strong> y encontrar el Inverso Modular.
                   </p>
                   <button
                     onClick={() => {
