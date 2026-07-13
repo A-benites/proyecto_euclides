@@ -31,7 +31,7 @@ export default function LabPage() {
           if (s >= totalSteps - 1) { stopPlay(); return s; }
           return s + 1;
         });
-      }, 1200);
+      }, 2000);
     } else {
       if (intervalRef.current) { clearInterval(intervalRef.current); intervalRef.current = null; }
     }

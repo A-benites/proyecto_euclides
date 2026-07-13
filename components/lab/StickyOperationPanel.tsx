@@ -7,6 +7,24 @@ interface StickyOperationPanelProps {
   mode: "normal" | "extended";
 }
 
+function BlurValue({ value, id, className }: { value: string; id: number; className?: string }) {
+  return (
+    <AnimatePresence mode="wait">
+      <motion.span
+        key={id}
+        initial={{ opacity: 0, filter: "blur(10px)", y: 4 }}
+        animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+        exit={{ opacity: 0, filter: "blur(10px)", y: -4 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className={`inline-block ${className || ""}`}
+        suppressHydrationWarning
+      >
+        {value}
+      </motion.span>
+    </AnimatePresence>
+  );
+}
+
 export default function StickyOperationPanel({ step, mode }: StickyOperationPanelProps) {
   if (!step) return null;
 
@@ -24,11 +42,11 @@ export default function StickyOperationPanel({ step, mode }: StickyOperationPane
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Dividendo (a)</p>
-            <p className="text-2xl font-bold text-violet-400" suppressHydrationWarning>{step.a.toString()}</p>
+            <BlurValue value={step.a.toString()} id={step.iteration} className="text-2xl font-bold text-violet-400" />
           </div>
           <div>
             <p className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Divisor (b)</p>
-            <p className="text-2xl font-bold text-cyan-400" suppressHydrationWarning>{step.b.toString()}</p>
+            <BlurValue value={step.b.toString()} id={step.iteration} className="text-2xl font-bold text-cyan-400" />
           </div>
         </div>
 
@@ -36,21 +54,11 @@ export default function StickyOperationPanel({ step, mode }: StickyOperationPane
         <div className="grid grid-cols-2 gap-4 border-t border-white/5 pt-5">
           <div>
             <p className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Cociente (q)</p>
-            <p className="text-xl font-medium text-emerald-400" suppressHydrationWarning>{step.quotient.toString()}</p>
+            <BlurValue value={step.quotient.toString()} id={step.iteration} className="text-xl font-medium text-emerald-400" />
           </div>
           <div>
             <p className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Residuo (r)</p>
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={step.remainder.toString()}
-                initial={{ scale: 1.2, opacity: 0, color: "#fff" }}
-                animate={{ scale: 1, opacity: 1, color: "#f472b6" }}
-                className="text-xl font-medium text-pink-400"
-                suppressHydrationWarning
-              >
-                {step.remainder.toString()}
-              </motion.p>
-            </AnimatePresence>
+            <BlurValue value={step.remainder.toString()} id={step.iteration} className="text-xl font-medium text-pink-400" />
           </div>
         </div>
 
@@ -69,11 +77,11 @@ export default function StickyOperationPanel({ step, mode }: StickyOperationPane
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-[10px] text-indigo-400/70 uppercase tracking-widest mb-1">Coef. X</p>
-                  <p className="text-2xl font-bold text-amber-400" suppressHydrationWarning>{step.x?.toString() ?? "-"}</p>
+                  <BlurValue value={step.x?.toString() ?? "-"} id={step.iteration} className="text-2xl font-bold text-amber-400" />
                 </div>
                 <div>
                   <p className="text-[10px] text-indigo-400/70 uppercase tracking-widest mb-1">Coef. Y</p>
-                  <p className="text-2xl font-bold text-blue-400" suppressHydrationWarning>{step.y?.toString() ?? "-"}</p>
+                  <BlurValue value={step.y?.toString() ?? "-"} id={step.iteration} className="text-2xl font-bold text-blue-400" />
                 </div>
               </div>
               <div className="mt-4 pt-4 border-t border-indigo-500/10 text-center">
