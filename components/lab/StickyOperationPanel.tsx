@@ -1,9 +1,9 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import type { EuclideanStep } from "@/types/euclides";
+import type { ExtendedEuclidStep } from "@/types/euclides";
 
 interface StickyOperationPanelProps {
-  step: EuclideanStep | null;
+  step: ExtendedEuclidStep | null;
   mode: "normal" | "extended";
 }
 
@@ -16,7 +16,7 @@ export default function StickyOperationPanel({ step, mode }: StickyOperationPane
         <h3 className="text-sm font-semibold tracking-widest text-gray-400 uppercase">
           Estado Actual
         </h3>
-        <span className="op-chip is-accent">Paso {step.stepNumber}</span>
+        <span className="op-chip is-accent">Paso {step.iteration}</span>
       </div>
 
       <div className="space-y-6">
@@ -36,19 +36,19 @@ export default function StickyOperationPanel({ step, mode }: StickyOperationPane
         <div className="grid grid-cols-2 gap-4 border-t border-white/5 pt-5">
           <div>
             <p className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Cociente (q)</p>
-            <p className="text-xl font-medium text-emerald-400" suppressHydrationWarning>{step.q.toString()}</p>
+            <p className="text-xl font-medium text-emerald-400" suppressHydrationWarning>{step.quotient.toString()}</p>
           </div>
           <div>
             <p className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Residuo (r)</p>
             <AnimatePresence mode="wait">
               <motion.p
-                key={step.r.toString()}
+                key={step.remainder.toString()}
                 initial={{ scale: 1.2, opacity: 0, color: "#fff" }}
                 animate={{ scale: 1, opacity: 1, color: "#f472b6" }}
                 className="text-xl font-medium text-pink-400"
                 suppressHydrationWarning
               >
-                {step.r.toString()}
+                {step.remainder.toString()}
               </motion.p>
             </AnimatePresence>
           </div>
@@ -78,7 +78,7 @@ export default function StickyOperationPanel({ step, mode }: StickyOperationPane
               </div>
               <div className="mt-4 pt-4 border-t border-indigo-500/10 text-center">
                 <p className="text-xs text-indigo-300/60 font-sans tracking-wide">
-                  {step.r === 0n ? "MCD Encontrado" : "Calculando..."}
+                  {step.remainder === 0n ? "MCD Encontrado" : "Calculando..."}
                 </p>
               </div>
             </motion.div>
