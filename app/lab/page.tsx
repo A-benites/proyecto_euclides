@@ -5,6 +5,7 @@ import LabInputForm from "@/components/lab/LabInputForm";
 import StepTable from "@/components/lab/StepTable";
 import PlaybackControls from "@/components/lab/PlaybackControls";
 import InfoAccordion from "@/components/ui/InfoAccordion";
+import StickyOperationPanel from "@/components/lab/StickyOperationPanel";
 import { motion, AnimatePresence } from "framer-motion";
 import { LockOpen, PlayCircle, ShieldCheck } from "lucide-react";
 
@@ -57,11 +58,11 @@ export default function LabPage() {
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
       {/* Page header */}
       <div className="mb-10">
-        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/5 px-4 py-1.5 text-sm text-cyan-300">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-4 py-1.5 text-sm text-accent">
           <span>🔬</span> El Laboratorio Interactivo
         </div>
-        <h1 className="text-4xl font-extrabold text-white">
-          Simulador RSA Paso a Paso
+        <h1 className="display-xl text-white">
+          Simulador RSA
         </h1>
         <p className="text-gray-400 max-w-2xl mb-8 text-sm sm:text-base">
           Observa primero cómo el <strong className="text-white">Algoritmo de Euclides Clásico</strong> demuestra que <strong>e</strong> y <strong>φ(n)</strong> son coprimos. Luego, desbloquea la versión <strong className="text-white">Extendida</strong> para calcular tu clave privada.
@@ -126,7 +127,10 @@ export default function LabPage() {
               </ul>
             </InfoAccordion>
 
-            {/* Playback Controls */}
+            <div className="grid gap-8 lg:grid-cols-3 items-start mt-8">
+              {/* Left Column: Controls & Table */}
+              <div className="lg:col-span-2 space-y-8">
+                {/* Playback Controls */}
             <PlaybackControls
               currentStep={currentStep}
               totalSteps={totalSteps}
@@ -210,8 +214,17 @@ export default function LabPage() {
               )}
 
               <StepTable steps={keys.steps} currentStep={currentStep} mode={viewMode} />
-            </div>
+              </div>
 
+              {/* Right Column: Sticky Panel */}
+              <div className="hidden lg:block">
+                <StickyOperationPanel 
+                  step={keys.steps[currentStep] ?? null} 
+                  mode={viewMode}
+                />
+              </div>
+            </div>
+            
             {/* Progression Unlocker */}
             <AnimatePresence>
               {isNormalFinished && viewMode === "normal" && (

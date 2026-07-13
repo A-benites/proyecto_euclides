@@ -1,8 +1,27 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap');
+
+@theme {
+  --font-sans: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", monospace;
+  --color-bg-base: #050505;
+  --color-bg-elev: #0d0d0d;
+  --color-border-subtle: #1a1a1a;
+  --color-accent: #50e3c2;
+  --color-accent-mint: #50e3c2;
+  --color-accent-peach: #e8a456;
+  --color-accent-coral: #ef4444;
+}
 
 :root {
-  --bg-primary: #060610;
-  --bg-secondary: #0d0d1a;
+  --bg-primary: #050505;
+  --bg-elev: #0d0d0d;
+  --border: #1a1a1a;
+  --text: #ededed;
+  --text-dim: #888;
+  --text-faint: #555;
+  --accent: #50e3c2;
 }
 
 * {
@@ -16,24 +35,54 @@ html {
 body {
   background-color: var(--bg-primary);
   background-image:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(120, 60, 255, 0.15), transparent),
-    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0, 180, 255, 0.08), transparent);
+    radial-gradient(ellipse 60% 40% at 50% -20%, rgba(80, 227, 194, 0.08), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(251, 191, 36, 0.04), transparent);
   min-height: 100dvh;
-  color: #f0f0ff;
-  font-family: "Inter", system-ui, sans-serif;
+  color: var(--text);
+  font-family: "Geist", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.011em;
 }
 
 /* Custom scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
-::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.4); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.7); }
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #2a2a2a; }
 
 /* Selection */
-::selection { background: rgba(139,92,246,0.3); color: white; }
+::selection { background: rgba(80, 227, 194, 0.2); color: white; }
 
-/* Prose overrides for math content */
-.formula {
-  font-family: "JetBrains Mono", "Fira Code", monospace;
+.display-xl {
+  font-size: clamp(2.5rem, 6vw, 4.75rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+}
+
+.display-lg {
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+}
+
+.op-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: var(--bg-elev);
+}
+.op-chip .dot {
+  width: 6px; height: 6px;
+  border-radius: 999px;
+  background: var(--accent);
 }
